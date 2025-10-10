@@ -1,8 +1,8 @@
 export DOTENV=full
 export HOMEBREW_NO_AUTO_UPDATE=1
+eval "$(go env)"
 eval "$(starship init zsh)"
-# export PATH="/usr/local/sbin:$PATH"
-export PATH="$HOME/.rye/shims:$HOME/.krew/bin:$(go env GOPATH)/bin:$HOME/.rd/bin:$HOME/go/bin:/usr/local/go/bin:$HOME:$PATH"
+export PATH="$PATH:$HOME/.krew/bin:/usr/local/go/bin:$GOPATH/bin"
 export GPG_TTY=$(tty)
 source ~/.fzf-tab/fzf-tab.plugin.zsh
 # 
@@ -30,8 +30,9 @@ review () {
 bindkey "^C" fzf-cd-widget
 export FZF_ALT_C_OPTS="--preview 'tree -C {} | head -200'"
 export FZF_COMPLETION_TRIGGER=''
-bindkey '^T' fzf-completion
-bindkey '^I' $fzf_default_completion
+# bindkey '^I' $fzf_default_completion
+
+#source <(fzf --zsh)
 
 PROJECT_HOME=${PROJECT_OPEN_HOME:-$HOME/projects}
 projectEditorOpen() {
@@ -63,7 +64,7 @@ bindkey '^o' cdProjecDir_widget
 
 # # Kubectl                                                                                                                                
 command -v fzf >/dev/null 2>&1 && {                                                                                                        
-        source <(kubectl completion zsh | sed 's#${requestComp} 2>/dev/null#${requestComp} 2>/dev/null | head -n 1 | fzf  --multi=0 #g')  
+    source <(kubectl completion zsh | sed 's#${requestComp} 2>/dev/null#${requestComp} 2>/dev/null | head -n 1 | fzf  --multi=0 #g')  
 }                                                                                                                                          
 alias k=kubectl                                                                                                                            
 alias kgp="kubectl get po"                                                                                                                 
@@ -167,4 +168,8 @@ close_all_prs () {
 
 cleanns() {
     kubectl get ns $1 -o json | jq '.spec.finalizers = []' | kubectl replace --raw "/api/v1/namespaces/$1/finalize" -f -
+}
+
+csv() {
+    column -s, -t < "${1}" | less -#2 -N -S
 }

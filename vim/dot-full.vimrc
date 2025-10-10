@@ -30,6 +30,7 @@ Plugin 'nvie/vim-flake8'
 Plugin 'tell-k/vim-autopep8'
 Plugin 'pearofducks/ansible-vim'
 Plugin 'rking/ag.vim'
+Plugin 'jremmen/vim-ripgrep'
 Plugin 'SirVer/ultisnips'
 Plugin 'honza/vim-snippets'
 Plugin 'tpope/vim-fugitive'
@@ -43,6 +44,7 @@ Plugin 'vim-airline/vim-airline-themes'
 Plugin 'sebdah/vim-delve'
 Plugin 'dense-analysis/ale'
 Plugin 'ambv/black'
+Plugin 'tmhedberg/SimpylFold'
 
 " Fold the things
 set foldmethod=syntax
@@ -86,7 +88,8 @@ let g:flake8_show_in_file = 1
 " depending on if the current color scheme Alacritty is using
 " has those keywords in its name.
 function! AlignBackground()
-  let &background = ( system('alacritty-theme current') =~ "light" ? "light" : "dark" )
+  " let &background = ( system('alacritty-theme current') =~ "dark" ? "light" : "dark" )
+  let &background = "dark"
   hi Normal guibg=NONE ctermbg=NONE
 endfunc
 
@@ -161,7 +164,7 @@ let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
 let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
 set termguicolors                    " Enable GUI colors for the terminal to get truecolor
 let g:gruvbox_contrast_light='medium'
-set background=light
+set background=dark
 colorscheme gruvbox
 
 let g:airline_theme='gruvbox'

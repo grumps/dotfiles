@@ -22,8 +22,6 @@
     # diffFilter = delta
 [push]
 	default = current
-[url "ssh://git@github.com/"]
-	insteadOf = https://github.com/
 [merge]
     conflictstyle = diff3
 
@@ -33,7 +31,7 @@
 [delta]
     # features = side-by-side line-numbers decorations
     features = line-numbers decorations
-    syntax-theme = gruvbox-light
+    syntax-theme = gruvbox-dark
     # plus-style = syntax "#003800"
     # minus-style = syntax "#3f0001"
     true-color = always
@@ -50,3 +48,11 @@
 #    line-numbers-minus-style = 124
 #    line-numbers-plus-style = 28
 #
+[credential "https://git.ofmax.li"]
+	helper = gopass
+    username = grumps
+[credential "https://git.ofmax.li/mgmt"]
+	helper = gopass
+    username = admin
+[http]
+	postBuffer = 524288000

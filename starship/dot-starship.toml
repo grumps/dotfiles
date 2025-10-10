@@ -1,0 +1,33 @@
+format= """
+$hostname\
+$kubernetes\
+$directory\
+$git_branch\
+$git_commit\
+$git_state\
+$git_status\
+$package\
+$golang\
+$java\
+$kotlin\
+$python\
+$terraform\
+$vlang\
+$vagrant\
+$gcloud\
+$env_var\
+$custom\
+$cmd_duration\
+$line_break\
+$jobs\
+$status\
+$character"""
+
+[aws]
+disabled = true
+[package]
+disabled = true
+[kubernetes]
+format = 'on [⛵$context \($namespace\)](dimmed green) '
+disabled = false
+
