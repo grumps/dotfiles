@@ -1,0 +1,31 @@
+# python
+[language-server.pylsp.config.pylsp.plugins.ruff]
+lineLength = 88
+preview = true
+select = ["E4", "E7", "E9", "F"] # Rules to be enabled by ruff
+ignore = ["D210"] # Rules to be ignored by ruff
+
+[[language]]
+name = "python"
+language-servers = [ "ruff" ]
+auto-format = true
+
+[language-server.ruff]
+command = "ruff"
+args = ["server"]
+
+# yaml
+[language-server.yaml-language-server.config.yaml]
+format = { enable = true }
+validation = true
+
+# just
+[language-server]
+just-lsp = { command = "just-lsp" }
+
+# markdown
+[[language]]
+name = "markdown"
+soft-wrap.enable = true
+# text-width = 80 < this is the default
+soft-wrap.wrap-at-text-width = true

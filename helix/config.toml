@@ -1,0 +1,7 @@
+theme = "gruvbox"
+
+[editor]
+# Trim whitespace preceding line endings on write (default false)
+trim-trailing-whitespace = true
+# Trim extra line endings after the final one on write (default false)
+trim-final-newlines = true
