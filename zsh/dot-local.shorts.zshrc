@@ -3,14 +3,15 @@ export HOMEBREW_NO_AUTO_UPDATE=1
 eval "$(go env)"
 eval "$(starship init zsh)"
 export PATH="$PATH:$HOME/.krew/bin:/usr/local/go/bin:$GOPATH/bin"
+export ZSH_FZF_HISTORY_SEARCH_DATES_IN_SEARCH=0
 export GPG_TTY=$(tty)
-source ~/.fzf-tab/fzf-tab.plugin.zsh
-# 
-# # AWS setup 
+# source ~/.fzf-tab/fzf-tab.plugin.zsh
+#
+# # AWS setup
 complete -C '/usr/local/bin/aws_completer' aws
-# 
+#
 # # PRR
-# 
+#
 review () {
     # review repo 44 view
     repo=$1
@@ -24,27 +25,31 @@ review () {
     gh pr -R $ORG/$repo $action ${@} $pr_num
 }
 
+alias yless="jless --yaml"
 # source ~/.fzf-zsh-plugin/fzf-zsh-plugin.plugin.zsh
-# key bindings                         
-[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh 
-bindkey "^C" fzf-cd-widget
+# key bindings
+# [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+source ~/.zsh-fzf-history-search/zsh-fzf-history-search.zsh
+bindkey "^c" fzf-cd-widget
 export FZF_ALT_C_OPTS="--preview 'tree -C {} | head -200'"
 export FZF_COMPLETION_TRIGGER=''
-# bindkey '^I' $fzf_default_completion
+bindkey '^t' fzf-completion
+bindkey '^u' $fzf_default_completion
+zstyle ':completion:*' fzf-search-display true
 
-#source <(fzf --zsh)
+export FZF_DEFAULT_COMMAND="fd --follow --exclude '.git' --exclude 'node_modules' --exclude '~/go' --exclude '~/Library'"
 
 PROJECT_HOME=${PROJECT_OPEN_HOME:-$HOME/projects}
 projectEditorOpen() {
     vimargs=""
     pushd ~/projects > /dev/null
-    selected="$(fd | fzf)" 
-    if [ -f $selected ]; 
-    then 
+    selected="$(fd | fzf)"
+    if [ -f $selected ];
+    then
         vimargs=$(basename $selected);
         pushd $selected(:h) > /dev/null;
     else
-        pushd $selected > /dev/null; 
+        pushd $selected > /dev/null;
     fi
     zle reset-prompt
     $EDITOR $vimargs < /dev/tty
@@ -52,7 +57,7 @@ projectEditorOpen() {
 
 cdProjectDir() {
     pushd ~/projects > /dev/null
-    selected="$(fd --type d | fzf)" 
+    selected="$(fd --type d | fzf)"
     pushd $selected
     zle reset-prompt
 }
@@ -62,14 +67,15 @@ zle -N cdProjecDir_widget cdProjectDir
 bindkey '^p' projectEditorOpen_widget
 bindkey '^o' cdProjecDir_widget
 
-# # Kubectl                                                                                                                                
-command -v fzf >/dev/null 2>&1 && {                                                                                                        
-    source <(kubectl completion zsh | sed 's#${requestComp} 2>/dev/null#${requestComp} 2>/dev/null | head -n 1 | fzf  --multi=0 #g')  
-}                                                                                                                                          
-alias k=kubectl                                                                                                                            
-alias kgp="kubectl get po"                                                                                                                 
-alias kl="kubectl logs"                                                                                                                    
-# complete -F __start_kubectl k kgp kl                                                                                                       
+# # Kubectl
+# command -v fzf >/dev/null 2>&1 && {
+#         source <(kubectl completion zsh | sed 's#${requestComp} 2>/dev/null#${requestComp} 2>/dev/null | ghead -n -1 | fzf  --multi=0 #g')
+# }
+
+source <(kubectl completion zsh)
+alias k=kubectl
+alias kgp="kubectl get po"
+alias kl="kubectl logs"
 
 
 rprompt() {
@@ -90,10 +96,10 @@ kallimages () {
 }
 # git
 alias gco="git checkout"
-# 
-# 
+#
+#
 alias j=jira
-# 
+#
 function jn() {
     jira $1 "CCSJP-${2}"
 }
@@ -109,7 +115,7 @@ function mdto() {
 function chg_theme () {
     sed -i "" -e "s#^colors: \*.*#colors: *gruv_${1}#g" ~/.alacritty.yml
 }
-# 
+#
 function gcnb () {
     jira_num=$1
     shift
@@ -150,16 +156,16 @@ gcm () {
 # docker
 
 
-drun () {                                                          
+drun () {
     local container="${1}"
-    docker pull "${container}"                                     
+    docker pull "${container}"
     docker run --entrypoint '' -it --rm "${container}" sh
-}                                                                  
-drrun () {                                                           
-    local container="${1}"                                          
-    docker pull "${container}"                                      
-    docker run --entrypoint '' --user 0:0 -it --rm "${container}" sh           
-}                                                                   
+}
+drrun () {
+    local container="${1}"
+    docker pull "${container}"
+    docker run --entrypoint '' --user 0:0 -it --rm "${container}" sh
+}
 
 close_all_prs () {
     for i in $(gh pr list --repo ${1} --json url | jq -r '.[].url'); do gh pr close $i; done
@@ -172,4 +178,9 @@ cleanns() {
 
 csv() {
     column -s, -t < "${1}" | less -#2 -N -S
+}
+get_screenshot() {
+    filename=$(ls ~/Documents/screenshots/ | tail -n 1)
+    cp "$HOME/Documents/screenshots/${filename}" .
+    echo "${filename}"
 }

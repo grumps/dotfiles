@@ -48,13 +48,15 @@ autoload -Uz promptinit
 promptinit
 prompt walters yellow
 setopt prompt_sp
+autoload bashcompinit && bashcompinit
+autoload -Uz compinit && compinit
 # PS1="%{\e[0;31m%}%m%{\e[0m%}"
 #PS1="[@%m %c$(__git_ps1 " (%s)")]
 #%B%(?..[%?] )%b%n@%U%m%u>"
 # History settings
 HISTFILE=~/.history-zsh
-HISTSIZE=10000
-SAVEHIST=10000
+HISTSIZE=100000
+SAVEHIST=100000
 setopt append_history           # allow multiple sessions to append to one history
 setopt bang_hist                # treat ! special during command expansion
 setopt extended_history         # Write history in :start:elasped;command format
@@ -68,7 +70,6 @@ setopt inc_append_history       # Write to history file immediately, not when sh
 setopt share_history            # Share history among all sessions
 
 # Tab completion
-autoload bashcompinit && bashcompinit
 autoload -Uz compinit && compinit
 setopt complete_in_word         # cd /ho/sco/tm<TAB> expands to /home/scott/tmp
 setopt auto_menu                # show completion menu on succesive tab presses
@@ -88,6 +89,9 @@ autoload -Uz edit-command-line
 zle -N edit-command-line
 bindkey -M vicmd v edit-command-line
 bindkey -a '^[[3~' vi-delete-char
+
+autoload bashcompinit && bashcompinit
+autoload -Uz compinit && compinit
 
 # BINDKEY
 bindkey -v
